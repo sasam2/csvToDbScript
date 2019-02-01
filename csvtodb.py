@@ -28,14 +28,15 @@ for line in file:
     vals = line.split(',')
     lineVals = ''
     for v in vals:
-        lineVals = lineVals + ', \''+v+'\''
+        lineVals = lineVals + ', \''+v.replace('\'', '\'\'')+'\'' #csv with commas within quotes not supported
     lineVals=lineVals[1::]
     c.execute('INSERT INTO csvdata VALUES ('+lineVals+')')
-    print('inserted '+line)
     lnCnt=lnCnt+1
 
 conn.commit()
 
+rwCnt=c.execute('SELECT COUNT(*) FROM csvdata').fetchone()[0]
+
 conn.close()
 
-print('Inserted '+ str(lnCnt)+' rows.')
+print(str(lnCnt)+' records inserted. Total table records are '+str(rwCnt)+'.')
